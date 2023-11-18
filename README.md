@@ -1,19 +1,36 @@
-# Client side of a potential noir zero knowledge rollup application that proves state transitions in a blockchain environment
-State transitions limited to transfers.
+# What is
 
-## Concept / Background
-For a zero knowledge rollup to be sound, the client will query state from the L1 and add new transactions to a merkle tree.
+This application is under development and strives to be a client side zk rollup service that will be able to generate proofs for state transitions in the
+shape of on-chain transaction data. Consensus and sequalization are less of a priority than the generation of sensible proofs and the overall structure of the project.
 
-For each transaction (or batches of transactions) in the merkle tree, the circuit will generate proofs for 3 statements.
+# Special dependencies
 
-### Statement 1: Signature integrity
-Every transfer in the merkle tree must be associated with a valid Signature
+This client application depends on my library `ecdsa-circuit-input-lib`. The library is used to generate byte inputs for the noir circuit to then generate proof for secp256k1 signature validity.
 
-### Statement 2: Merkle proof validity
-The merkle path is recalculated in the circuit and a merkle proof is generated.
+It also utilizes a special merkle tree that's essentially a Rust implementation of a blockchain privacy transaction service's merkle tree.
 
-### Statement 3: State transition integrity
-The integrity of all state transitions is ensured by conditionally applying those state transitions inside the circuit
+The merkle tree resides in my `noir-research` crate/project.
 
-### Statement 4: Message hash / tx hash
+# Circuits
 
+The rollup circuit is a composition of 3 sub-circuits, one for each `merkle proofs`, `signatures`, `transfer hash` and `state transitions`.
+
+## Inputs and Outputs
+
+`Base set` of inputs for each circuit:
+
+| merkle proof | signature | transfer hash | state transition  |
+|--------------|-----------|---------------|-------------------|
+| merkle path  | tx hash   | sender        | sender balance    |
+| merkle root  | sender x  | recipient     | recipient balance |
+|              | sender y  | amount        | transfer amount   |
+|              |           |               | sender y          |
+|              |           |               | recipient y       |
+
+
+Additional inputs:
+
+- `nonce`
+- `timestamp`
+
+For the first stage of the `POC`, only the `base set` of inputs will be considered.
