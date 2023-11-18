@@ -1,7 +1,16 @@
 pub mod helpers;
 pub mod transfer;
 fn main() {
+    todo!("Implement client service")
+    /*
+        * Instantiate a transfer backend with state (e.g. non-empty set of balances)
+        * generate a valid transfer with signature using the ecdsa-lib
+        * add the transfer preimage to the merkle tree and record the merkle proof
+        * output all inputs to the circuit and run the prover
 
+        => initially the prover will be run manually, later this client should make
+        use of the nargo binary (nix env).
+    */
 }
 
 #[test]

@@ -1,5 +1,6 @@
 use sha2::{Digest, Sha256};
 use serde_json;
+pub mod backend;
 // Generation 1 Transfer struct
 pub struct Transfer_G1{
     pub sender: Vec<u8>,
