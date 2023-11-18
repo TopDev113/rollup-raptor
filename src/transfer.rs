@@ -7,7 +7,7 @@ pub struct Transfer_G1{
     pub recipient: Vec<u8>,
     pub amount: Vec<u8>,
 
-    pub signature: Vec<u8>
+    //pub signature: Vec<u8>
 }
 
 impl Transfer_G1{
@@ -16,7 +16,7 @@ impl Transfer_G1{
         let mut message = self.sender.clone();
         message.append(&mut self.recipient.clone());
         message.append(&mut self.amount.clone());
-        message.append(&mut self.signature.clone());
+        //message.append(&mut self.signature.clone());
         let mut sha_256 = Sha256::new();
         sha_256.update(message);
         sha_256.finalize().to_vec()

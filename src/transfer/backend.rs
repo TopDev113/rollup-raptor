@@ -2,12 +2,12 @@ use merkle_tree::{tornado::TornadoTree, helpers::{hashLeftRight, hash_bytes}};
 use crate::transfer::Transfer_G1;
 // A mock node with account state
 pub struct MockNode{
-    tree: Option<TornadoTree>,
+    pub tree: Option<TornadoTree>,
     // representing account balances.
-    state: Vec<(Vec<u8>, u64)>
+    pub state: Vec<(Vec<u8>, u64)>
 }
 impl MockNode{
-    fn init(mut self){
+    pub fn init(mut self) -> MockNode{
         // default merkle tree for testing has a depth of 5.
         let mut tree = TornadoTree{
             zero_node: hash_bytes(vec![0;32]),
@@ -17,12 +17,14 @@ impl MockNode{
             index: 0,
             depth: 5
         };
+        tree.calculate_zero_levels();
         self.tree = Some(tree);
+        self
     }
     // add new leaf to the simulated L2's merkle tree
-    fn add_leaf(self, transfer: Transfer_G1) -> Vec<(Vec<u8>, bool)>{
-        let transfer_perimage: Vec<u8> = transfer.hash();
+    pub fn add_leaf(self, transfer: Transfer_G1) -> Vec<(Vec<u8>, bool)>{
+        let transfer_preimage: Vec<u8> = transfer.hash();
         // add transaction preimage to the tree
-        self.tree.unwrap().add_leaf(transfer_perimage)
+        self.tree.unwrap().add_leaf(transfer_preimage)
     }
 }

@@ -197,7 +197,7 @@ dependencies = [
 [[package]]
 name = "ecdsa-circuit-input-lib"
 version = "0.1.0"
-source = "git+https://github.com/jonas089/ecdsa-circuit-input-lib.git?branch=master#97cb6e812b157cf130cb579922ff2bea2e847f7f"
+source = "git+https://github.com/jonas089/ecdsa-circuit-input-lib.git?branch=master#4581503b4a4bcfaabee8d5df4f3f468635a8fe82"
 dependencies = [
  "k256",
  "rand_core",

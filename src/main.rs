@@ -80,12 +80,46 @@ fn generate_signature_circuit_inputs(){
         }
     */
     // for this test, a placeholder message will be used
-    let message: String = "SOME_SERIALIZED_STRUCT".to_string();
+    let message: Vec<u8> = vec![0;32];
     // initialize the input generator
     let input_generator = InputGenerator{
         sk: deserialized_signing_key,
         message: message
     };
     let inputs = input_generator.generate();
+    println!("Circuit Inputs: {:?}", inputs);
+}
+
+#[test]
+fn generate_merkle_circuit_inputs(){
+    use transfer::backend::MockNode;
+    use transfer::Transfer_G1;
+    let mock_backend: MockNode = MockNode{
+        tree: None,
+        state: Vec::new()
+    };
+    let mock_backend: MockNode = mock_backend.init();
+    use std::path::PathBuf;
+    use ecdsa_circuit_input_lib::db::StoreManager;
+    use ecdsa_circuit_input_lib::keys::ecdsa::EcdsaKeyManager;
+    use ecdsa_circuit_input_lib::core::signatures::InputGenerator;
+    use k256::{
+        ecdsa::{SigningKey}, FieldBytes
+    };
+    /* 
+        create transfer message
+        hash transfer message, 
+        sign transfer hash,
+        add leaf
+    */
+    use helpers::u64_to_u8_array;
+    let transfer = Transfer_G1{
+        sender: vec![0;32],
+        recipient: vec![1;32],
+        // convert amount from u64 to Vec<u8>
+        amount: u64_to_u8_array(10 as u64).to_vec()
+    };
+    // add the leaf to the merkle tree
+    let inputs: Vec<(Vec<u8>, bool)> = mock_backend.add_leaf(transfer);
     println!("Circuit Inputs: {:?}", inputs);
 }
