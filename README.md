@@ -1,4 +1,5 @@
-![raptor-retrievers](https://github.com/jonas089/noir-cli-rollup/blob/master/resources/icon.webp)
+<img src="https://github.com/jonas089/noir-cli-rollup/blob/master/resources/icon.webp" width="500" height="500">
+
 # What is
 
 This application is under development and strives to be a client side zk rollup service that will be able to generate proofs for state transitions in the
