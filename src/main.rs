@@ -1,3 +1,7 @@
+use transfer::Transfer_G1;
+
+use crate::helpers::u64_to_u8_array;
+
 pub mod helpers;
 pub mod transfer;
 fn main() {
@@ -49,6 +53,7 @@ fn generate_signature_circuit_inputs(){
     use k256::{
         ecdsa::{SigningKey}, FieldBytes
     };
+    use helpers::u64_to_u8_array;
     // initialize keystore
     let store_manager: StoreManager = StoreManager{
         path: PathBuf::from("./keys.db")
@@ -80,7 +85,14 @@ fn generate_signature_circuit_inputs(){
         }
     */
     // for this test, a placeholder message will be used
-    let message: Vec<u8> = vec![0;32];
+    // let message: Vec<u8> = vec![0;32];
+    let transfer = Transfer_G1{
+        sender: vec![0;32],
+        recipient: vec![1;32],
+        // convert amount from u64 to Vec<u8>
+        amount: u64_to_u8_array(10 as u64).to_vec()
+    };
+    let message: Vec<u8> = transfer.hash();
     // initialize the input generator
     let input_generator = InputGenerator{
         sk: deserialized_signing_key,
@@ -122,4 +134,21 @@ fn generate_merkle_circuit_inputs(){
     // add the leaf to the merkle tree
     let inputs: Vec<(Vec<u8>, bool)> = mock_backend.add_leaf(transfer);
     println!("Circuit Inputs: {:?}", inputs);
+}
+
+#[test]
+fn generate_transfer_hash_circuit_inputs(){
+    use transfer::Transfer_G1;
+    let transfer: Transfer_G1 = Transfer_G1 { 
+        sender: vec![0;32], 
+        recipient: vec![1;32], 
+        amount: u64_to_u8_array(10 as u64).to_vec() 
+    };
+    let transfer_hash = transfer.hash();
+    println!("Circuit inputs: {:?}, {:?}", transfer, transfer_hash);
+    // todo! for verifier
+    /*
+        sender_bytes.append(recipient_bytes).append(amount_bytes) => use u8_to_u64 for amount
+        => compare transfer_hash & generate proof    
+    */
 }
