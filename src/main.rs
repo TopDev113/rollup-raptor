@@ -111,13 +111,6 @@ fn generate_merkle_circuit_inputs(){
         state: Vec::new()
     };
     let mock_backend: MockNode = mock_backend.init();
-    use std::path::PathBuf;
-    use ecdsa_circuit_input_lib::db::StoreManager;
-    use ecdsa_circuit_input_lib::keys::ecdsa::EcdsaKeyManager;
-    use ecdsa_circuit_input_lib::core::signatures::InputGenerator;
-    use k256::{
-        ecdsa::{SigningKey}, FieldBytes
-    };
     /* 
         create transfer message
         hash transfer message, 
@@ -125,7 +118,7 @@ fn generate_merkle_circuit_inputs(){
         add leaf
     */
     use helpers::u64_to_u8_array;
-    let transfer = Transfer_G1{
+    let transfer: Transfer_G1 = Transfer_G1{
         sender: vec![0;32],
         recipient: vec![1;32],
         // convert amount from u64 to Vec<u8>
@@ -151,4 +144,5 @@ fn generate_transfer_hash_circuit_inputs(){
         sender_bytes.append(recipient_bytes).append(amount_bytes) => use u8_to_u64 for amount
         => compare transfer_hash & generate proof    
     */
+
 }

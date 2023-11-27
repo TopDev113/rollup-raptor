@@ -1,6 +1,7 @@
 // Struct to prove merkle paths
 struct Merkle{
     leaf: [u8;32],
+    // len depends on depth (4 => tree of depth 5 including root node)
     path: [[u8;32];4],
     position: [u8;4],
     root: [u8;32]

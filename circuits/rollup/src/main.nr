@@ -1,5 +1,5 @@
 use dep::std;
-use dep::std::collections::vec::Vec;
+mod hash;
 
 fn main(){
 
@@ -7,5 +7,10 @@ fn main(){
 
 #[test]
 fn test_main(){
+    //main();
+}
+
+#[test]
+fn test_hash(){
     main();
 }

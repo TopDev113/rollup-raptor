@@ -15,8 +15,14 @@ impl Transfer_G1{
     // experimental feature, could cause trouble in circuit
     pub fn hash(&self) -> Vec<u8>{
         let mut message = self.sender.clone();
-        message.append(&mut self.recipient.clone());
-        message.append(&mut self.amount.clone());
+        for byte in self.recipient.clone(){
+            message.push(byte);
+        };
+        for byte in self.amount.clone(){
+            message.push(byte);
+        };
+        //message.append(&mut self.recipient.clone());
+        //message.append(&mut self.amount.clone());
         //message.append(&mut self.signature.clone());
         let mut sha_256 = Sha256::new();
         sha_256.update(message);
@@ -31,6 +37,5 @@ struct Transfer_G2{
     amount: Vec<u8>,
     nonce: Vec<u8>,
     timestamp: Vec<u8>,
-
     signature: Vec<u8>
 }
