@@ -9,7 +9,7 @@ struct Merkle{
     root: [u8;32]
 }
 impl Merkle{
-    fn try_prove(self){
+    fn reconstruct(self) -> [u8;32]{
         let mut current_hash: [u8;32] = [0;32];
         if self.position[0] == 0{
             current_hash = std::hash::sha256(combine(self.leaf, self.path[0]));
@@ -25,9 +25,9 @@ impl Merkle{
                 current_hash = std::hash::sha256(combine(self.path[i], current_hash));
             }
         };
-        std::println(current_hash);
-        std::println(self.root);
-        assert(current_hash == self.root);
+        //std::println(current_hash);
+        //std::println(self.root);
+        current_hash
     }
 }
 
@@ -44,7 +44,7 @@ fn test_merkle(){
         position: [0,0,0,0],
         root: [47, 51, 123, 206, 240, 238, 122, 236, 88, 69, 233, 27, 115, 13, 227, 234, 77, 229, 53, 70, 12, 141, 81, 241, 106, 69, 63, 112, 140, 224, 21, 118]
     };
-    merkle.try_prove();
+    assert(merkle.reconstruct() == [47, 51, 123, 206, 240, 238, 122, 236, 88, 69, 233, 27, 115, 13, 227, 234, 77, 229, 53, 70, 12, 141, 81, 241, 106, 69, 63, 112, 140, 224, 21, 118]);
 }
 
 

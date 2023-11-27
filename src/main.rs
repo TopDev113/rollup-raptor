@@ -137,7 +137,7 @@ fn generate_transfer_hash_circuit_inputs(){
     let transfer: Transfer_G1 = Transfer_G1 { 
         sender: vec![0;32], 
         recipient: vec![1;32], 
-        amount: u64_to_u8_array(10 as u64).to_vec() 
+        amount: u64_to_u8_array(10 as u64).to_vec()
     };
     let transfer_hash = transfer.hash();
     println!("Circuit inputs: {:?}, {:?}", transfer, transfer_hash);
