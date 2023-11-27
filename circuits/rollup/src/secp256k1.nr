@@ -1,10 +1,10 @@
 use dep::std;
 // struct to prove message signatures
-pub struct Signature{
-    pub message: [u8;32],
-    pub x: [u8;32],
-    pub y: [u8;32],
-    pub signature: [u8;64]
+struct Signature{
+    message: [u8;32],
+    x: [u8;32],
+    y: [u8;32],
+    signature: [u8;64]
 }
 
 impl Signature{
@@ -12,4 +12,15 @@ impl Signature{
         let message_hash = std::hash::sha256(self.message);
         std::ecdsa_secp256k1::verify_signature(self.x, self.y, self.signature, message_hash)
     }
+}
+
+#[test]
+fn test_secp256k1(){
+    let signature = Signature{
+        message: [192, 246, 228, 6, 21, 169, 84, 198, 106, 131, 91, 200, 25, 216, 99, 78, 85, 119, 218, 18, 83, 37, 190, 122, 23, 73, 170, 28, 245, 215, 101, 184],
+        x: [42, 20, 27, 7, 166, 238, 115, 118, 231, 70, 250, 155, 101, 211, 192, 140, 19, 27, 144, 177, 226, 5, 17, 160, 24, 56, 8, 156, 29, 165, 234, 121],
+        y: [83, 7, 164, 2, 157, 234, 12, 147, 193, 122, 238, 77, 240, 96, 153, 248, 232, 84, 4, 37, 135, 204, 5, 238, 210, 29, 134, 226, 211, 89, 183, 124],
+        signature: [218, 19, 71, 182, 206, 141, 138, 47, 62, 31, 216, 31, 145, 217, 24, 9, 87, 19, 41, 243, 185, 138, 4, 102, 50, 39, 153, 89, 173, 157, 229, 185, 97, 227, 171, 66, 192, 26, 236, 25, 34, 198, 97, 233, 152, 243, 74, 250, 133, 239, 114, 146, 239, 214, 240, 26, 206, 195, 205, 137, 135, 236, 31, 65]
+    };
+    assert(signature.verify() == true);
 }

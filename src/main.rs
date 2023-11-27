@@ -110,7 +110,7 @@ fn generate_merkle_circuit_inputs(){
         tree: None,
         state: Vec::new()
     };
-    let mock_backend: MockNode = mock_backend.init();
+    let mut mock_backend: MockNode = mock_backend.init();
     /* 
         create transfer message
         hash transfer message, 
@@ -126,6 +126,8 @@ fn generate_merkle_circuit_inputs(){
     };
     // add the leaf to the merkle tree
     let inputs: Vec<(Vec<u8>, bool)> = mock_backend.add_leaf(transfer);
+    let root = mock_backend.tree.unwrap().filled.pop().unwrap();
+    println!("Root: {:?}", root);
     println!("Circuit Inputs: {:?}", inputs);
 }
 

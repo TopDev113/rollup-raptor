@@ -27,7 +27,7 @@ impl TornadoTree{
 
         for i in 0..self.depth {
             if current_index % 2 == 0 {
-                // If index is even, left is the new leaf or its hash, right is the zero node at this level
+                // If index is even, left is the new leaf preimage, right is the zero node at this level
                 self.filled[i] = current_hash.clone(); // push the leaf or its hash
                 current_hash = hashLeftRight(current_hash, self.zero_levels[i].clone());
                 if i < self.depth - 1{

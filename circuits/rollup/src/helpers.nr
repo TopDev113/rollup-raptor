@@ -12,13 +12,13 @@ pub fn u8_array_to_u64(arr: [u8; 8]) -> u64 {
     (arr[7] as u64)
 }
 
-pub fn merge(left: [u8], right: [u8]) -> [u8]{
-    let mut merged_vec: Vec<u8> = Vec::new();
+pub fn combine(left: [u8;32], right: [u8;32]) -> [u8]{
+    let mut merged_vec: [u8] = [];
     for byte in left{
-        merged_vec.push(byte);
+        merged_vec = merged_vec.push_back(byte);
     };
     for byte in right{
-        merged_vec.push(byte);
+        merged_vec = merged_vec.push_back(byte);
     };
-    merged_vec.slice
+    merged_vec
 }
