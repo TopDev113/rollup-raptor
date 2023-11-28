@@ -38,6 +38,13 @@ pub fn main(
     path: [[u8;32];4],
     // state root
     root: [u8;32],
+
+    /* TBD
+        * balances
+    
+    */
+
+
     // output state (sender, recipient balances)
 ) -> pub [u64;2]{
     // prove merkle path
