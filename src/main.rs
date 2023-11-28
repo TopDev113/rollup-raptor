@@ -87,7 +87,7 @@ fn generate_signature_circuit_inputs(){
     // for this test, a placeholder message will be used
     // let message: Vec<u8> = vec![0;32];
     let transfer = Transfer_G1{
-        sender: vec![0;32],
+        sender: vec![83, 7, 164, 2, 157, 234, 12, 147, 193, 122, 238, 77, 240, 96, 153, 248, 232, 84, 4, 37, 135, 204, 5, 238, 210, 29, 134, 226, 211, 89, 183, 124],
         recipient: vec![1;32],
         // convert amount from u64 to Vec<u8>
         amount: u64_to_u8_array(10 as u64).to_vec()
@@ -119,7 +119,7 @@ fn generate_merkle_circuit_inputs(){
     */
     use helpers::u64_to_u8_array;
     let transfer: Transfer_G1 = Transfer_G1{
-        sender: vec![0;32],
+        sender: vec![83, 7, 164, 2, 157, 234, 12, 147, 193, 122, 238, 77, 240, 96, 153, 248, 232, 84, 4, 37, 135, 204, 5, 238, 210, 29, 134, 226, 211, 89, 183, 124],
         recipient: vec![1;32],
         // convert amount from u64 to Vec<u8>
         amount: u64_to_u8_array(10 as u64).to_vec()
@@ -135,7 +135,7 @@ fn generate_merkle_circuit_inputs(){
 fn generate_transfer_hash_circuit_inputs(){
     use transfer::Transfer_G1;
     let transfer: Transfer_G1 = Transfer_G1 { 
-        sender: vec![0;32], 
+        sender: vec![83, 7, 164, 2, 157, 234, 12, 147, 193, 122, 238, 77, 240, 96, 153, 248, 232, 84, 4, 37, 135, 204, 5, 238, 210, 29, 134, 226, 211, 89, 183, 124], 
         recipient: vec![1;32], 
         amount: u64_to_u8_array(10 as u64).to_vec()
     };
