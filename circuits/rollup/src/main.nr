@@ -17,6 +17,7 @@ use hash::Transfer;
 use merkle::Merkle;
 use secp256k1::Signature;
 
+use helpers::{u8_array_to_u64};
 /* Batch prover - 10 transactions
     * Inputs:
         x: [[u8;32];10],
@@ -85,7 +86,11 @@ pub fn main(
     };
     let preimage = transfer.Hash();
     assert(preimage == leaf);
-    [0,0]
+
+    // very simple for now
+    let balance_sender = balances[0] - u8_array_to_u64(amount);
+    let balance_recipient = balances[1] + u8_array_to_u64(amount);
+    [balance_sender,balance_recipient]
     
     // apply state transition
 }
