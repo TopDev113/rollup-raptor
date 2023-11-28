@@ -1,8 +1,8 @@
 /*
-This circuit takes as input the balances of two accounts, a new merkle hash (that's computed off-chain based on the current merkle tree), a signed transacion object
+This circuit takes as input the balances of two accounts, a new merkle hash (that's computed off-chain based on current state), a signed transacion object
 and generates a proof for the validity of the transaction and its inclusion in the merkle tree for the given merkle root.
 
-The new merkle hash is a public input to the circuit, and  the previous state (accounts, balances) as private inputs.
+The new merkle hash is a public input to the circuit, and  the previous state (accounts, balances) are private inputs.
 
 Public outputs of this circuit are the balances after state mutation.
 */
