@@ -10,7 +10,7 @@ This client application depends on my library `ecdsa-circuit-input-lib`. The lib
 
 It also utilizes a special merkle tree that's essentially a Rust implementation of a blockchain privacy transaction service's merkle tree.
 
-The merkle tree resides in my `noir-research` crate/project. But was also added to this crate for sake of simplicity [here](https://github.com/jonas089/noir-cli-rollup/blob/master/merkle-tree/src/tornado.rs)
+The merkle tree resides in my `thyla-trees` crate/project (imported via git).
 
 # Soundness
 This rollup client can generate proofs for the statement that `signatures, merkle paths and message hashes are valid` for a set of transactions. 
