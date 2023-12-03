@@ -11,4 +11,4 @@ rand_core = "0.6.4"
 sha2 = "0.10.8"
 serde_json = "1.0.108"
 ecdsa-circuit-input-lib = { git = "https://github.com/jonas089/ecdsa-circuit-input-lib.git", branch = "master" }
-merkle-tree = {path = "merkle-tree"}
+merkle-tree = {git = "https://github.com/jonas089/thyla-trees.git", branch = "master"}

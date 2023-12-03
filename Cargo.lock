@@ -367,6 +367,7 @@ checksum = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e126420da8274909a0167"
 [[package]]
 name = "merkle-tree"
 version = "0.1.0"
+source = "git+https://github.com/jonas089/thyla-trees.git?branch=master#8d25597dc59a79c9bb600ab8ade4643410b85ce9"
 dependencies = [
  "digest",
  "sha2",
