@@ -13,7 +13,7 @@ impl MockNode{
         let mut tree = TornadoTree{
             zero_node: hash_bytes(vec![0;32]),
             zero_levels: Vec::new(),
-            root_history: Vec::new(),
+            root_history: vec![Vec::new();30],
             filled: vec![vec![], vec![], vec![], vec![], vec![]],
             index: 0,
             depth: 5
