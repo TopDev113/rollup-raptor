@@ -3,9 +3,16 @@
 mod error;
 use error::NoirError;
 use casper_contract::contract_api::{noir::noir_verifier, runtime, storage};
-use casper_execution_engine::core::runtime::noir::types::NoirProof;
 use casper_types::{CLType, EntryPoint, EntryPointAccess, EntryPointType, EntryPoints, Key, contracts::NamedKeys};
 use serde_json_wasm;
+use serde::{Serialize, Deserialize};
+
+// tbd: import type from contract api?
+#[derive(Default, Clone, Serialize, Deserialize)]
+pub struct NoirProof {
+    pub verifier: Vec<u8>,
+    pub proof: Vec<u8>,
+}
 
 #[cfg(not(feature = "casper-circom"))]
 #[no_mangle]

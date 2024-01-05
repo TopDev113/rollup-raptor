@@ -38,7 +38,7 @@
 
           attributes = {
             src = lib.cleanSourceWith {
-              src = craneLib.path "./";
+              src = craneLib.path "./rollup";
               filter = path: type: craneLib.filterCargoSources path type;
             };
             nativeBuildInputs = with pkgs; [ pkg-config  ];

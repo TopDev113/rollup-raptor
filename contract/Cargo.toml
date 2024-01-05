@@ -12,5 +12,5 @@ target = "wasm32-unknown-unknown"
 base64 = { version = "0.13.0", default-features = false, features = ["alloc"] }
 casper-contract = { git = "https://github.com/jonas089/casper-node/", branch="rollup-raptor-noir", default-features = false, features = ["test-support"]}
 casper-types = { git = "https://github.com/jonas089/casper-node/", branch="rollup-raptor-noir", default-features = false}
-casper-execution-engine = { git = "https://github.com/jonas089/casper-node/", branch="rollup-raptor-noir", default-features = false}
 serde-json-wasm = "1.0.0"
+serde = "1.0.194"
