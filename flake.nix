@@ -15,18 +15,14 @@
   inputs = {
     flake-parts.url = "github:hercules-ci/flake-parts";
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    treefmt-nix.url = "github:numtide/treefmt-nix";
     fenix.url = "github:nix-community/fenix";
     fenix.inputs.nixpkgs.follows = "nixpkgs";
     crane.url = "github:ipetkov/crane";
     crane.inputs.nixpkgs.follows = "nixpkgs";
   };
-  outputs = inputs@{self, flake-parts, treefmt-nix, ...}:
+  outputs = inputs@{self, flake-parts, ...}:
     flake-parts.lib.mkFlake { inherit inputs; }{
       systems = [ "aarch64-darwin" "x86_64-linux" ];
-      imports = [
-        treefmt-nix.flakeModule
-      ];
       perSystem = {config, self', inputs', system, pkgs, lib, ...}:
         let
           toolchain = inputs'.fenix.packages.${system}.fromToolchainFile {
@@ -36,10 +32,10 @@
           rustToolchain = inputs'.fenix.packages.complete.toolchain;
           craneLib = inputs.crane.lib.${system}.overrideToolchain rustToolchain;
 
-          attributes = {
+          workspaceAttributes = {
             src = lib.cleanSourceWith {
-              src = craneLib.path "./rollup";
-              filter = path: type: craneLib.filterCargoSources path type;
+              src = craneLib.path ./.;
+            filter = path: type: craneLib.filterCargoSources path type || (baseNameOf path == "rollup.proof") || (baseNameOf path == "rollup.proof");
             };
             nativeBuildInputs = with pkgs; [ pkg-config  ];
             buildInputs = with pkgs; [ openssl.dev sqlite ] ++ (lib.optionals (system == "aarch64-darwin") [pkgs.libiconv pkgs.darwin.Security pkgs.darwin.apple_sdk.frameworks.SystemConfiguration]);
@@ -51,16 +47,16 @@
               RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
               nativeBuildInputs = [
                 rustToolchain
-              ]  ++ attributes.nativeBuildInputs ++ attributes.buildInputs;
+              ]  ++ workspaceAttributes.nativeBuildInputs ++ workspaceAttributes.buildInputs;
           };
 
           packages = {
-            noir-cli-rollup-deps = craneLib.buildDepsOnly (attributes // {
-              pname = "noir-cli-rollup-deps";
+            noir-cli-rollup-deps = craneLib.buildDepsOnly (workspaceAttributes // {
+              pname = "workspace-deps";
             });
             noir-cli-rollup =
                 let noir-cli-rollup' =
-                    craneLib.buildPackage (attributes // {
+                    craneLib.buildPackage (workspaceAttributes // {
                     cargoArtifacts = self'.packages.noir-cli-rollup-deps;
                     meta.mainProgram = "noir-cli-rollup";
                     });
@@ -70,16 +66,23 @@
                 }
                 ''
                     mkdir -p $out/bin
-                    makeWrapper ${noir-cli-rollup'}/bin/noir_cli_rollup $out/bin/noir_cli_rollup \
-                        --set PATH ${pkgs.lib.makeBinPath [ inputs'.noir.packages.nargo ]} \
+                    makeWrapper ${noir-cli-rollup'}/bin/noir-cli-rollup $out/bin/noir_cli_rollup \
+                    --set PATH ${pkgs.lib.makeBinPath []}
                 '';
 
             default = self'.packages.noir-cli-rollup;
 
-            noir-cli-rollup-docs = craneLib.cargoDoc (attributes // {
+            noir-cli-rollup-docs = craneLib.cargoDoc (workspaceAttributes // {
               cargoArtifacts = self'.packages.noir-cli-rollup-deps;
             });
         };
     };
   };
 }
+
+
+
+
+
+
+

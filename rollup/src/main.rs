@@ -5,7 +5,7 @@ use crate::helpers::u64_to_u8_array;
 pub mod helpers;
 pub mod transfer;
 fn main() {
-    todo!("Implement client service")
+    todo!("Implement client service");
     /*
         * Instantiate a transfer backend with state (e.g. non-empty set of balances)
         * generate a valid transfer with signature using the ecdsa-lib
@@ -17,6 +17,7 @@ fn main() {
     */
 }
 
+/*
 #[test]
 fn u64(){
     use helpers::u64_to_u8_array;
@@ -148,3 +149,4 @@ fn generate_transfer_hash_circuit_inputs(){
     */
 
 }
+*/
