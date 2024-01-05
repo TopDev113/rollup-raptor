@@ -1,6 +1,5 @@
 {
-  description = "noir-cli-rollup";
-
+  description = "noir-client";
   nixConfig = {
     extra-substituters = [
       "https://crane.cachix.org"
@@ -26,19 +25,19 @@
       perSystem = {config, self', inputs', system, pkgs, lib, ...}:
         let
           toolchain = inputs'.fenix.packages.${system}.fromToolchainFile {
-            file = ./rust-toolchain.toml;
+            file = ./client/rust-toolchain.toml;
             sha256 = "";
           };
           rustToolchain = inputs'.fenix.packages.complete.toolchain;
           craneLib = inputs.crane.lib.${system}.overrideToolchain rustToolchain;
 
-          workspaceAttributes = {
+          rollupClientAttributes = {
             src = lib.cleanSourceWith {
-              src = craneLib.path ./.;
-            filter = path: type: craneLib.filterCargoSources path type || (baseNameOf path == "rollup.proof") || (baseNameOf path == "rollup.proof");
+              src = craneLib.path ./client;
+              filter = path: type: craneLib.filterCargoSources path type;
             };
             nativeBuildInputs = with pkgs; [ pkg-config  ];
-            buildInputs = with pkgs; [ openssl.dev sqlite ] ++ (lib.optionals (system == "aarch64-darwin") [pkgs.libiconv pkgs.darwin.Security pkgs.darwin.apple_sdk.frameworks.SystemConfiguration]);
+            buildInputs = with pkgs; [ rustup openssl.dev sqlite ] ++ (lib.optionals (system == "aarch64-darwin") [pkgs.libiconv pkgs.darwin.Security pkgs.darwin.apple_sdk.frameworks.SystemConfiguration]);
           };
         in
           {
@@ -47,33 +46,33 @@
               RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
               nativeBuildInputs = [
                 rustToolchain
-              ]  ++ workspaceAttributes.nativeBuildInputs ++ workspaceAttributes.buildInputs;
+              ]  ++ rollupClientAttributes.nativeBuildInputs ++ rollupClientAttributes.buildInputs;
           };
 
           packages = {
-            noir-cli-rollup-deps = craneLib.buildDepsOnly (workspaceAttributes // {
-              pname = "workspace-deps";
+            noir-client-deps = craneLib.buildDepsOnly (rollupClientAttributes // {
+              pname = "noir-client-deps";
             });
-            noir-cli-rollup =
-                let noir-cli-rollup' =
-                    craneLib.buildPackage (workspaceAttributes // {
-                    cargoArtifacts = self'.packages.noir-cli-rollup-deps;
-                    meta.mainProgram = "noir-cli-rollup";
+            noir-client =
+                let noir-client' =
+                    craneLib.buildPackage (rollupClientAttributes // {
+                    cargoArtifacts = self'.packages.noir-client-deps;
+                    meta.mainProgram = "noir-client";
                     });
-                in pkgs.runCommand "noir-cli-rollup-wrapped" {
+                in pkgs.runCommand "noir-client-wrapped" {
                     buildInputs = [ pkgs.makeWrapper ];
-                    meta.mainProgram = "noir-cli-rollup";
+                    meta.mainProgram = "noir-client";
                 }
                 ''
                     mkdir -p $out/bin
-                    makeWrapper ${noir-cli-rollup'}/bin/noir-cli-rollup $out/bin/noir_cli_rollup \
+                    makeWrapper ${noir-client'}/bin/noir-client $out/bin/noir_cli_rollup \
                     --set PATH ${pkgs.lib.makeBinPath []}
                 '';
 
-            default = self'.packages.noir-cli-rollup;
+            default = self'.packages.noir-client;
 
-            noir-cli-rollup-docs = craneLib.cargoDoc (workspaceAttributes // {
-              cargoArtifacts = self'.packages.noir-cli-rollup-deps;
+            noir-client-docs = craneLib.cargoDoc (rollupClientAttributes // {
+              cargoArtifacts = self'.packages.noir-client-deps;
             });
         };
     };
