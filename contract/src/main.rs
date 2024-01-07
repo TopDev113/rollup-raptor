@@ -23,7 +23,7 @@ pub extern "C" fn call_verifier(){
         verifier: verifier_payload.to_string(),
         proof: proof_payload.to_string()
     };
-    if noir_verifier(serde_json_wasm::to_string(&noir_proof).unwrap()) != [1]{
+    if noir_verifier(&serde_json_wasm::to_vec(&noir_proof).unwrap()) != [1]{
         runtime::revert(NoirError::InvalidProof);
     }
 }
