@@ -31,10 +31,10 @@
           rustToolchain = inputs'.fenix.packages.complete.toolchain;
           craneLib = inputs.crane.lib.${system}.overrideToolchain rustToolchain;
 
-          rollupClientAttributes = {
+          workspaceAttributes = {
             src = lib.cleanSourceWith {
-              src = craneLib.path ./client;
-              filter = path: type: craneLib.filterCargoSources path type;
+              src = craneLib.path ./.;
+              filter = path: type: craneLib.filterCargoSources path type || (baseNameOf path == "rollup.proof") || (baseNameOf path == "rollup.proof") ;
             };
             nativeBuildInputs = with pkgs; [ pkg-config  ];
             buildInputs = with pkgs; [ rustup openssl.dev sqlite ] ++ (lib.optionals (system == "aarch64-darwin") [pkgs.libiconv pkgs.darwin.Security pkgs.darwin.apple_sdk.frameworks.SystemConfiguration]);
@@ -46,16 +46,16 @@
               RUST_SRC_PATH = "${rustToolchain}/lib/rustlib/src/rust/library";
               nativeBuildInputs = [
                 rustToolchain
-              ]  ++ rollupClientAttributes.nativeBuildInputs ++ rollupClientAttributes.buildInputs;
+              ]  ++ workspaceAttributes.nativeBuildInputs ++ workspaceAttributes.buildInputs;
           };
 
           packages = {
-            noir-client-deps = craneLib.buildDepsOnly (rollupClientAttributes // {
+            noir-client-deps = craneLib.buildDepsOnly (workspaceAttributes // {
               pname = "noir-client-deps";
             });
             noir-client =
                 let noir-client' =
-                    craneLib.buildPackage (rollupClientAttributes // {
+                    craneLib.buildPackage (workspaceAttributes // {
                     cargoArtifacts = self'.packages.noir-client-deps;
                     meta.mainProgram = "noir-client";
                     });
@@ -71,7 +71,7 @@
 
             default = self'.packages.noir-client;
 
-            noir-client-docs = craneLib.cargoDoc (rollupClientAttributes // {
+            noir-client-docs = craneLib.cargoDoc (workspaceAttributes // {
               cargoArtifacts = self'.packages.noir-client-deps;
             });
         };

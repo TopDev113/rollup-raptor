@@ -10,18 +10,18 @@ use serde::{Serialize, Deserialize};
 // tbd: import type from contract api?
 #[derive(Default, Clone, Serialize, Deserialize)]
 pub struct NoirProof {
-    pub verifier: Vec<u8>,
-    pub proof: Vec<u8>,
+    pub verifier: String,
+    pub proof: String,
 }
 
 #[cfg(not(feature = "casper-circom"))]
 #[no_mangle]
 pub extern "C" fn call_verifier(){
-    let proof_payload: &[u8] = include_bytes!("../rollup.proof");
-    let verifier_payload: &[u8] = include_bytes!("../Verifier.toml");
+    let proof_payload: &str = include_str!("../rollup.proof");
+    let verifier_payload: &str = include_str!("../Verifier.toml");
     let noir_proof: NoirProof = NoirProof{
-        verifier: verifier_payload.to_vec(),
-        proof: proof_payload.to_vec()
+        verifier: verifier_payload.to_string(),
+        proof: proof_payload.to_string()
     };
     if noir_verifier(serde_json_wasm::to_string(&noir_proof).unwrap()) != [1]{
         runtime::revert(NoirError::InvalidProof);
