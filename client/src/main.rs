@@ -17,7 +17,6 @@ fn main() {
     */
 }
 
-/*
 #[test]
 fn u64(){
     use helpers::u64_to_u8_array;
@@ -149,4 +148,3 @@ fn generate_transfer_hash_circuit_inputs(){
     */
 
 }
-*/
