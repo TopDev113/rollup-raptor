@@ -14,7 +14,7 @@ pub struct NoirProof {
     pub proof: String,
 }
 
-#[cfg(not(feature = "casper-circom"))]
+#[cfg(not(feature = "casper-noir"))]
 #[no_mangle]
 pub extern "C" fn call_verifier(){
     let proof_payload: &str = include_str!("../rollup.proof");
