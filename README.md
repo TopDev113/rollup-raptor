@@ -43,6 +43,3 @@ For the first stage of the `POC`, only the `base set` of inputs will be consider
 ## Batch processing
 A proof is generated the same way as for a single transaction, except a set of n transactions is mapped to a single proof => efficiency ++.
 For testing chunks of 10 transactinos are combined into one proof.
-
-## Contract
-The example `contract` can be run against this [branch](https://github.com/jonas089/casper-node/tree/rollup-raptor-noir) of the casper node whose host function interface includes a `noir` binary (verifier).
